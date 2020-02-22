@@ -5,8 +5,8 @@ Login Page,
 Sign up Page
 
 TODO :
-Finish Home Page,/
+Finish Home Page\
 Add background image to Login && Sign Up Page\
-Add Notifications
-Add Paiement with Stripe
-Add Paiement in Crypto
+Add Notifications\
+Add Paiement with Stripe\
+Add Paiement in Crypto\
