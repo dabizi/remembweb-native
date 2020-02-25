@@ -2,7 +2,8 @@ This repo contains the react client app that go with the project Remembweb.
 
 Done :
 Login Page,
-Sign up Page
+Sign up Page,
+Profile
 
 TODO :
 Finish Home Page\
