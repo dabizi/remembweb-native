@@ -1,13 +1,13 @@
 This repo contains the react client app that go with the project Remembweb.
 
-Done :
+Done :\
 Login Page,\
 Sign up Page,\
 Profile,\
 Image upload,\
 Home screen
 
-TODO :
+TODO :\
 Finish Home Page\
 Add background image to Login && Sign Up Page\
 Add Notifications\
