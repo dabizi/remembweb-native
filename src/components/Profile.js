@@ -1,28 +1,28 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import EditDetails from './EditDetails';
 
 import MuiLink from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-
 
 import LocationOn from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import EditIcon from '@material-ui/icons/Edit';
+import KeyboardReturn from '@material-ui/icons/KeyboardReturn'
 
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser, uploadImage } from '../redux/actions/userActions';
 
 import dayjs from 'dayjs';
+import MyButton from '../util/MyButton';
 
 const styles = (theme) => ({
-    ...theme.spreadThis
+    ...theme.spreadThis,
   });
 
 export class Profile extends Component {
@@ -35,7 +35,10 @@ export class Profile extends Component {
     handleEditPicture = () => {
         const fileInput = document.getElementById('imageInput');
         fileInput.click();
-    }
+    };
+    handleLogout = () => {
+        this.props.logoutUser();
+    };
     render() {
         const { classes, 
             user: { credentials: { handle, createdAt, imageUrl, bio, website, location }, loading, authenticated }} = this.props;
@@ -50,11 +53,9 @@ export class Profile extends Component {
                          id="imageInput"
                          hidden="hidden"
                          onChange={this.handleImageChange}/>
-                         <Tooltip title="Edit profile picture" placement="top">
-                         <IconButton onClick={this.handleEditPicture} className="button">
-                             <EditIcon color="primary"></EditIcon>
-                         </IconButton>
-                         </Tooltip>
+                         <MyButton tip="Edit profile picture" onClick={this.handleEditPicture} btnClassName="button">
+                             <EditIcon color="primary"/>
+                         </MyButton>
                         
                      </div>
                      <hr />
@@ -68,7 +69,7 @@ export class Profile extends Component {
                          {location && (
                              <Fragment>
                                  <LocationOn color="primary"/> <span>{location}</span>
-
+                                 <hr />
                              </Fragment>
                              
                          )}
@@ -88,6 +89,10 @@ export class Profile extends Component {
 
 
                      </div>
+                     <MyButton tip="Logout" onClick={this.handleLogout}>
+                             <KeyboardReturn color="primary"/>
+                         </MyButton>
+                     <EditDetails />
                  </div>
                  </Paper>
         ) : (
