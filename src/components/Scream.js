@@ -9,8 +9,19 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
+import LikeButton from './LikeButton';
+import MyButton from '../util/MyButton';
+import ChatIcon from '@material-ui/icons/Chat';
+import DeleteScream from '../components/DeleteScream';
+import ScreamDialog from './ScreamDialog';
+
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+
 const styles = {
     card: {
+        position: 'relative',
         display: 'flex',
         marginBottom: 20
     },
@@ -26,7 +37,15 @@ const styles = {
 export class Scream extends Component {
     render() {
         dayjs.extend(relativeTime);
-        const { classes, scream : { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount } } = this.props
+        const { classes, scream : { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount },
+    user:{
+        authenticated,
+        credentials: { handle }
+    } } = this.props;
+        
+        const deleteButton = authenticated && userHandle === handle ? (
+            <DeleteScream screamId={screamId}/>
+        ) : null
         return (
            <Card className={classes.card}>
                <CardMedia
@@ -40,12 +59,20 @@ export class Scream extends Component {
                    color="primary">
                        {userHandle}
                        </Typography>
+                       {deleteButton}
                    <Typography 
                    variant="body2" 
                    color="textSecondary">
                        {dayjs(createdAt).fromNow()}
                        </Typography>
                    <Typography variant="body1">{body}</Typography>
+                   <LikeButton screamId={screamId}/>
+                   <span>{likeCount}  Like(s)</span>
+                   <MyButton tip="comments">
+                       <ChatIcon color="primary"/>
+                   </MyButton>
+                   <span>{commentCount} Comment(s)</span>
+                   <ScreamDialog screamId={screamId} userHandle={userHandle}/>
                </CardContent>
 
            </Card>
@@ -53,4 +80,14 @@ export class Scream extends Component {
     }
 }
 
-export default withStyles(styles)(Scream);
+Scream.propTypes = {
+    user: PropTypes.object.isRequired,
+    scream: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    user: state.user
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(Scream));
