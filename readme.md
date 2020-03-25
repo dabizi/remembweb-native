@@ -11,9 +11,9 @@ Notifications,\
 Deployed on Firebase Hosting
 
 TODO :\
-Add Questions and Answer
-Add Keywords for Answer
-Add Timebase Notifications
+Add Questions and Answer\
+Add Keywords for Answer\
+Add Timebase Notifications\
 Add background image to Login && Sign Up Page\
 Add Paiement with Stripe\
 Add Paiement in Crypto
