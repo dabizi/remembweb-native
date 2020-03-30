@@ -31,21 +31,49 @@ const styles = {
     content: {
         padding: 25,
         objectFit: 'cover'
-    }
+    },
+    invisibleSeparator: {
+        border: 'none',
+        margin: 0
+    },
 }
 
 export class Scream extends Component {
     render() {
         dayjs.extend(relativeTime);
-        const { classes, scream : { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount },
+        const { classes, scream : { 
+            body,
+            theme,
+            subject,
+            createdAt, 
+            userImage,
+            userHandle, 
+            screamId, 
+            likeCount, 
+            commentCount },
     user:{
         authenticated,
         credentials: { handle }
     } } = this.props;
-        
+
+    //59
+
         const deleteButton = authenticated && userHandle === handle ? (
             <DeleteScream screamId={screamId}/>
-        ) : null
+        ) : null;
+
+
+    // Only Show First 55 Characters when String is very long
+    let bodydisplay = '';
+
+    if (body.length >= 59){
+            bodydisplay = body.substring(0, 55) + '...';
+        }
+    else {
+            bodydisplay = body;
+    }
+            
+
         return (
            <Card className={classes.card}>
                <CardMedia
@@ -54,25 +82,29 @@ export class Scream extends Component {
                <CardContent className={classes.content}>
                    <Typography 
                    variant="h5" 
-                   component={Link} 
-                   to={`/users/${userHandle}`}
                    color="primary">
-                       {userHandle}
+                       <span>{theme}, <i>{subject}</i></span>
                        </Typography>
                        {deleteButton}
                    <Typography 
                    variant="body2" 
+                   component={Link}
+                   to={`/users/${userHandle}`}
                    color="textSecondary">
-                       {dayjs(createdAt).fromNow()}
+                       <span><i>{dayjs(createdAt).fromNow()}, by {userHandle}</i></span>
+                       
                        </Typography>
-                   <Typography variant="body1">{body}</Typography>
+
+                   <Typography variant="body1">
+                       {bodydisplay}
+                       </Typography>
                    <LikeButton screamId={screamId}/>
                    <span>{likeCount}  Like(s)</span>
                    <MyButton tip="Comments">
                        <ChatIcon color="primary"/>
-                   </MyButton>
+                       </MyButton>
                    <span>{commentCount} Comment(s)</span>
-                   <ScreamDialog screamId={screamId} userHandle={userHandle} openDialog={this.props.openDialog}/>
+                    <ScreamDialog screamId={screamId} userHandle={userHandle} openDialog={this.props.openDialog}/>
                </CardContent>
 
            </Card>

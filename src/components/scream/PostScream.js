@@ -40,6 +40,11 @@ class PostScream extends Component{
     state = {
         open: false,
         body: '',
+        subject: '',
+        theme: '',
+        answer: '',
+        keywords: '',
+        source: '',
         errors: {}
     };
     componentWillReceiveProps(nextProps) {
@@ -64,9 +69,17 @@ class PostScream extends Component{
     }
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.postScream({ body: this.state.body });
+        this.props.postScream({ 
+            body: this.state.body, 
+            subject: this.state.subject, 
+            theme: this.state.theme, 
+            answer: this.state.answer,
+            keywords: this.state.keywords,
+            source: this.state.source
+         });
     }
     render(){
+        //TODO in Dialog : Add Errors for non-body name
         const {errors } = this.state;
         const { classes, UI: { loading }} = this.props;
         return (
@@ -78,21 +91,74 @@ class PostScream extends Component{
                     <MyButton tip="Close" onClick={this.handleClose} tipClassName={classes.closeButton}>
                         <CloseIcon/>
                     </MyButton>
-                    <DialogTitle>Post a new scream</DialogTitle>
+                    <DialogTitle>Post something to remember</DialogTitle>
                     <DialogContent>
                         <form onSubmit={this.handleSubmit}>
+                        <TextField
+                            name="theme"
+                            type="text"
+                            label="Theme"
+                            placeholder="Theme (ex : History)"
+                            error={errors.theme ? true : false}
+                            helperText={errors.theme}
+                            className={classes.textField}
+                            onChange={this.handleChange}
+                            fullWidth/>
+                            <TextField
+                            name="subject"
+                            type="text"
+                            label="Subject"
+                            placeholder="Subject (ex : Louis XVI)"
+                            error={errors.body2 ? true : false}
+                            helperText={errors.body2}
+                            className={classes.textField}
+                            onChange={this.handleChange}
+                            fullWidth/>
                             <TextField
                             name="body"
                             type="text"
-                            label="SCREAM!!"
+                            label="Question"
                             multiline
                             rows="3"
-                            placeholder="Scream at your fellow apes"
+                            placeholder="Write your general question"
                             error={errors.body ? true : false}
                             helperText={errors.body}
                             className={classes.textField}
                             onChange={this.handleChange}
                             fullWidth/>
+                            <TextField
+                            name="answer"
+                            type="text"
+                            label="Answer"
+                            multiline
+                            rows="2"
+                            placeholder="Write your general answer"
+                            error={errors.answer ? true : false}
+                            helperText={errors.answer}
+                            className={classes.textField}
+                            onChange={this.handleChange}
+                            fullWidth/>
+                            <TextField
+                            name="keywords"
+                            type="text"
+                            label="Keywords"
+                            placeholder="Keywords (ex : French King, 1754, 1793, Ancien Regime)"
+                            error={errors.body2 ? true : false}
+                            helperText={errors.body2}
+                            className={classes.textField}
+                            onChange={this.handleChange}
+                            fullWidth/>
+                            <TextField
+                            name="source"
+                            type="text"
+                            label="Source"
+                            placeholder="Source (ex : The Life of Louis XVI by John Hardman)"
+                            error={errors.body2 ? true : false}
+                            helperText={errors.body2}
+                            className={classes.textField}
+                            onChange={this.handleChange}
+                            fullWidth/>
+                            
                             <Button type="submit" variant="contained" color="primary"
                             className = {classes.submitButton} disabled={loading}>
                                 Submit

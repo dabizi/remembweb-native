@@ -47,7 +47,12 @@ const styles = (theme) => ({
         width: '90%',
         backgroundColor: 'rgba(0,0,0, 0.6)',
         marginBottom: 10
-    }
+    },
+    invisibleSeparator: {
+        height: 4,
+        border: 'none',
+        margin: 4
+    },
 })
 
 const ScreamSkeleton = (props) => {
@@ -58,6 +63,7 @@ const ScreamSkeleton = (props) => {
             <CardMedia className={classes.cover} image={NoImg}/>
             <CardContent className={classes.cardContent}>
                 <div className={classes.handle}/>
+                <div className={classes.invisibleSeparator}/>
                 <div className={classes.date}/>
                 <div className={classes.fullLine}/>
                 <div className={classes.fullLine}/>

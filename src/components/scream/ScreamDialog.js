@@ -85,7 +85,21 @@ class ScreamDialog extends Component {
     }
 
     render(){
-        const {classes, scream: { screamId, body, createdAt, likeCount, commentCount, userImage, userHandle, comments}, UI: { loading }} = this.props;
+        const {classes, scream: { 
+            screamId, 
+            body,
+            theme,
+            subject,
+            answer,
+            keywords,
+            createdAt, 
+            likeCount, 
+            commentCount, 
+            userImage, 
+            userHandle, 
+            source,
+            comments}, 
+            UI: { loading }} = this.props;
 
         const dialogMarkup = loading ? (
             <div className={classes.spinnerDiv}>
@@ -99,19 +113,49 @@ class ScreamDialog extends Component {
                 </Grid>
                 <Grid item sm={7}>
                    <Typography
-                   component={Link}
                    color="primary"
-                   variant="h5"
-                   to={`users/${userHandle}`}>
-                       @{userHandle}
+                   variant="h5">
+                       <span>{theme}, <i>{subject}</i></span>
                    </Typography>
                    <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body2" color="textSecondary">
-                       {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+                   <Typography 
+                   variant="body2" 
+                   component={Link}
+                   color="textSecondary"
+                   to={`/users/${userHandle}`}>
+                       <span><i>{dayjs(createdAt).format('h:mm a, MMMM DD YYYY')} by {userHandle}</i></span>
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       <span><u>Question</u> :</span>
                    </Typography>
                    <hr className={classes.invisibleSeparator}/>
                    <Typography variant="body1">
                        {body}
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       <span><u>Answer</u> :</span>
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       {answer}
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       <span><u>Keywords</u> :</span>
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       {keywords}
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       <span><u>Source</u> :</span>
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       {source}
                    </Typography>
                    <LikeButton screamId={screamId}/>
                    <span>{likeCount}  Like(s)</span>
