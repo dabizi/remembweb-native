@@ -8,11 +8,13 @@ Image upload,\
 Home screen, \
 Finish Home Page,\
 Notifications,\
+Questions and Answer, \
+ Keywords for Answer \
 Deployed on Firebase Hosting
 
 TODO :\
-Add Questions and Answer\
-Add Keywords for Answer\
+Solve Bug when like on screamDialog \
+Remember Test Dialog \
 Add Timebase Notifications\
 Add background image to Login && Sign Up Page\
 Add Paiement with Stripe\
