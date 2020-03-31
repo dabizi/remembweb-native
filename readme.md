@@ -17,6 +17,7 @@ TODO :\
 Solve Bug when like on screamDialog \
 List of Liked memo to test \
 Add Timebase Notifications\
+Backend for success/ failure of a memo \
 Add background image to Login && Sign Up Page\
 Add Paiement with Stripe\
 Add Paiement in Crypto
