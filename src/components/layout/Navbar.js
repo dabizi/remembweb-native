@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';
 import MyButton from '../../util/MyButton';
 
 import PostScream from '../scream/PostScream';
+import TestDialog from '../test/TestDialog';
 import HomeIcon from '@material-ui/icons/Home';
+import SearchIcon from '@material-ui/icons/Search';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import Notifications from './Notifications';
 
 
@@ -18,18 +21,29 @@ export class Navbar extends Component {
     render() {
         const { authenticated } = this.props
         return (
+                /* To add for next release
+                        </MyButton>
+                        </Link>
+                        <Link to="/">
+                        <MyButton tip="Search">
+                            <SearchIcon/>
+
+
+                */
+            
            <AppBar>
                <Toolbar className="nav-container">
                    { authenticated ? (
                        <Fragment>
-                        <PostScream/>
                         <Link to="/">
                         <MyButton tip="Home">
                             <HomeIcon/>
 
                         </MyButton>
                         </Link>
-                            <Notifications />
+                        <TestDialog screamId={"AJANj50skQGr64dzYqez"} userHandle={"Janin"} openDialog={this.props.openDialog}/>
+                        <PostScream/>
+                        <Notifications />
                        </Fragment>
 
                    ) : ( 

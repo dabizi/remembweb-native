@@ -6,10 +6,6 @@ import MyButton from '../../util/MyButton';
 
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import LikeButton from './LikeButton';
-import Comments from './Comments';
-import CommentForm from './CommentForm';
-
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -18,8 +14,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import CloseIcon from '@material-ui/icons/Close';
-import ChatIcon from '@material-ui/icons/Chat';
-import UnfoldMore from '@material-ui/icons/UnfoldMore';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import { connect } from 'react-redux';
 import { getScream, clearErrors } from '../../redux/actions/dataActions';
@@ -50,11 +47,12 @@ const styles = (theme) => ({
     }
 });
 
-class ScreamDialog extends Component {
+class TestDialog extends Component {
+    
     state = {
         open: false,
-        oldPath: '',
-        newPath: ''
+        showForm: true,
+        youranswer: ''
     };
 
     componentDidMount(){
@@ -64,25 +62,96 @@ class ScreamDialog extends Component {
     }
 
     handleOpen = () => {
-        let oldPath = window.location.pathname;
-
         const { userHandle, screamId } = this.props;
-        const newPath = `/users/${userHandle}/screams/${screamId}`;
-
-        if (oldPath === newPath) oldPath = `/users/${userHandle}`;
-
-        window.history.pushState(null, null, newPath);
-
-        this.setState({ open: true, oldPath, newPath })
+        this.setState({ open: true})//, oldPath, newPath })
+        
         this.props.getScream(this.props.screamId);
     }
+    handleChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value})
+    }
+
+    handleCheck = (event) => {
+        event.preventDefault();
+        this.setState({ showForm: false})
+        this.setState({ [event.name]: event.value });
+    }
+
     handleClose = () => {
-
-        window.history.pushState(null, null, this.state.oldPath);
-
         this.setState({ open: false })
+        this.setState({ showForm: true})
         this.props.clearErrors();
     }
+
+    showForm = (classes, loading) => {
+        return (
+            <form onSubmit={this.handleCheck}>
+                <Typography variant="body1">
+                       <span><u>Answer</u> :</span>
+                   </Typography>
+            <TextField
+            name="youranswer"
+            type="text"
+            label="Answer"
+            multiline
+            rows="5"
+            placeholder="Write your general answer"
+            className={classes.textField}
+            onChange={this.handleChange}
+            fullWidth
+            />
+            <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary"
+            className = {classes.submitButton} disabled={loading}>
+                Check
+                {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
+               
+            </Button>
+        </form>
+          );
+      }
+
+      showAnswer = (classes, loading, answer, keywords, youranswer) => {
+        return (
+            <Fragment>
+                <Typography variant="body1">
+                       <span><u>Your Answer</u> :</span>
+                   </Typography>
+                   <Typography 
+                   variant="body1"
+                  style={{whiteSpace: 'pre-line'}}>
+                       {youranswer}
+                   </Typography>
+                   <Typography variant="body1">
+                       <span><u>General Answer</u> :</span>
+                   </Typography>
+                   <Typography 
+                   variant="body1"
+                  style={{whiteSpace: 'pre-line'}}>
+                       {answer}
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       <span><u>Keywords</u> :</span>
+                   </Typography>
+                   <hr className={classes.invisibleSeparator}/>
+                   <Typography variant="body1">
+                       {keywords}
+                   </Typography>
+                   <Button 
+    type="submit" 
+   variant="contained" 
+   color="primary"
+            className = {classes.submitButton} disabled={loading}>
+                Next
+                {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
+               
+            </Button>
+                   </Fragment>
+
+        );}
 
     render(){
         const {classes, scream: { 
@@ -93,13 +162,12 @@ class ScreamDialog extends Component {
             answer,
             keywords,
             createdAt, 
-            likeCount, 
-            commentCount, 
             userImage, 
-            userHandle, 
-            source,
-            comments}, 
+            userHandle,
+        }, 
             UI: { loading }} = this.props;
+
+            const youranswer = this.state.youranswer;
 
         const dialogMarkup = loading ? (
             <div className={classes.spinnerDiv}>
@@ -134,47 +202,14 @@ class ScreamDialog extends Component {
                        {body}
                    </Typography>
                    <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body1">
-                       <span><u>Answer</u> :</span>
-                   </Typography>
-                   <hr className={classes.invisibleSeparator}/>
-                   <Typography 
-                   variant="body1"
-                  style={{whiteSpace: 'pre-line'}}>
-                       {answer}
-                   </Typography>
-                   <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body1">
-                       <span><u>Keywords</u> :</span>
-                   </Typography>
-                   <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body1">
-                       {keywords}
-                   </Typography>
-                   <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body1">
-                       <span><u>Source</u> :</span>
-                   </Typography>
-                   <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body1">
-                       {source}
-                   </Typography>
-                   <LikeButton screamId={screamId}/>
-                   <span>{likeCount}  Like(s)</span>
-                   <MyButton tip="comments">
-                       <ChatIcon color="primary"/>
-                   </MyButton>
-                   <span>{commentCount} Comment(s)</span>
+                    {this.state.showForm ? this.showForm(classes, loading) : this.showAnswer(classes, loading, answer, keywords, youranswer)}
                 </Grid>
-                <hr className={classes.visibleSeparator}/>
-                <CommentForm screamId={screamId} />
-                <Comments comments={comments}/>
             </Grid>
         );
         return (
             <Fragment>
-                <MyButton onClick={this.handleOpen} tip="Expand scream" tipClassName={classes.expandButton}>
-                    <UnfoldMore color="primary"/>
+                <MyButton onClick={this.handleOpen} tip="Test" tipClassName={classes.expandButton}>
+                    <ScheduleIcon color="primary"/>
                 </MyButton>
                 <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="sm">
                     <MyButton tip="Close" onClick={this.handleClose} tipClassName={classes.closeButton}>
@@ -190,7 +225,7 @@ class ScreamDialog extends Component {
     }
 }
 
-ScreamDialog.propTypes = {
+TestDialog.propTypes = {
     clearErrors: PropTypes.func.isRequired,
     getScream: PropTypes.func.isRequired,
     screamId: PropTypes.string.isRequired,
@@ -209,4 +244,4 @@ const mapActionsToProps = {
     clearErrors
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(ScreamDialog));
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(TestDialog));
