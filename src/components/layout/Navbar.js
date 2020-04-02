@@ -7,8 +7,6 @@ import MyButton from '../../util/MyButton';
 import PostScream from '../scream/PostScream';
 import TestDialog from '../test/TestDialog';
 import HomeIcon from '@material-ui/icons/Home';
-import SearchIcon from '@material-ui/icons/Search';
-import ScheduleIcon from '@material-ui/icons/Schedule';
 import Notifications from './Notifications';
 
 

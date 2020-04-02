@@ -10,7 +10,9 @@ import {
     POST_SCREAM,
     SET_ERRORS,
     STOP_LOADING_UI,
-    SUBMIT_COMMENT } from '../types';
+    SUBMIT_COMMENT,
+    VALIDATE_TEST
+} from '../types';
 import axios from 'axios'
 
 // GET ALL SCREAMS
@@ -77,6 +79,18 @@ export const likeScream = (screamId) => dispatch => {
     .catch(err => console.log(err));
 }
 
+// TEST VALIDATE TEST
+export const validateTest = (screamId) => dispatch => {
+    axios.get(`/screams/${screamId}/like`)
+    .then(res => {
+        dispatch({
+            type: VALIDATE_TEST,
+            payload: res.data
+        })
+    })
+    .catch(err => console.log(err));
+}
+
 // UNLIKE A SCREAM
 export const unlikeScream = (screamId) => dispatch => {
     axios.get(`/screams/${screamId}/unlike`)
@@ -107,6 +121,7 @@ export const submitComment = (screamId, commentData) => (dispatch) => {
     })
 }
 
+//DELETE SCREAM
 export const deleteScream = (screamId) => (dispatch) => {
     axios
       .delete(`/screams/${screamId}`)
@@ -117,8 +132,8 @@ export const deleteScream = (screamId) => (dispatch) => {
   };
 
 
-  
-  export const getUserData = (userHandle) => dispatch => {
+//GET USER DATA
+export const getUserData = (userHandle) => dispatch => {
       dispatch({ type: LOADING_DATA });
       axios.get(`/user/${userHandle}`)
       .then(res => {
@@ -135,6 +150,7 @@ export const deleteScream = (screamId) => (dispatch) => {
       })
   }
 
-  export const clearErrors = () => dispatch => {
+//CLEAR ERRORS
+export const clearErrors = () => dispatch => {
       dispatch({ type: CLEAR_ERRORS });
   }

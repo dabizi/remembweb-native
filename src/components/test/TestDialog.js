@@ -19,7 +19,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 import { connect } from 'react-redux';
-import { getScream, clearErrors } from '../../redux/actions/dataActions';
+import { getScream, clearErrors, validateTest } from '../../redux/actions/dataActions';
 
 const styles = (theme) => ({
     ...theme.spreadThis,
@@ -44,6 +44,9 @@ const styles = (theme) => ({
         textAlign: 'center',
         marginTop: 50,
         marginBottom: 50
+    },
+    wrongButton: {
+        marginRight: 30
     }
 });
 
@@ -82,6 +85,9 @@ class TestDialog extends Component {
         this.setState({ showForm: true})
         this.props.clearErrors();
     }
+    validateTest = () => {
+        this.props.validateTest("AJANj50skQGr64dzYqez");
+      };
 
     showForm = (classes, loading) => {
         return (
@@ -143,9 +149,19 @@ class TestDialog extends Component {
                    <Button 
     type="submit" 
    variant="contained" 
+   color="secondary"
+            className = {classes.wrongButton} disabled={loading}>
+                Wrong
+                {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
+               
+            </Button>
+            <Button 
+    type="submit" 
+   variant="contained" 
    color="primary"
+   onClick={this.validateTest}
             className = {classes.submitButton} disabled={loading}>
-                Next
+                Right
                 {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
                
             </Button>
@@ -232,6 +248,7 @@ TestDialog.propTypes = {
     userHandle: PropTypes.string.isRequired,
     scream: PropTypes.object.isRequired,
     UI: PropTypes.object.isRequired,
+    validateTest: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -241,7 +258,8 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = {
     getScream,
-    clearErrors
+    clearErrors,
+    validateTest,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(TestDialog));
