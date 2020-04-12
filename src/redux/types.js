@@ -4,6 +4,7 @@ export const SET_UNAUTHENTICATED = 'SET_UNAUTHENTICATED';
 export const SET_USER = 'SET_USER';
 export const LOADING_USER = 'LOADING_USER';
 export const MARK_NOTIFICATIONS_READ = 'MARK_NOTIFICATIONS_READ';
+export const SET_TEST = 'SET_TEST';
 
 // UI reducer types
 export const SET_ERRORS = 'SET_ERRORS';
@@ -21,3 +22,4 @@ export const DELETE_SCREAM = 'DELETE_SCREAM';
 export const POST_SCREAM = 'POST_SCREAM';
 export const SUBMIT_COMMENT = 'SUBMIT_COMMENT';
 export const VALIDATE_TEST = 'VALIDATE_TEST';
+export const INVALIDATE_TEST = 'INVALIDATE_TEST';

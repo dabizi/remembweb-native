@@ -1,6 +1,7 @@
 import { 
     SET_USER, 
-    SET_ERRORS, 
+    SET_ERRORS,
+    SET_TEST,
     CLEAR_ERRORS, 
     LOADING_UI, 
     SET_UNAUTHENTICATED,
@@ -43,6 +44,23 @@ export const getUserData = () => (dispatch) => {
         })
     })
     .catch(err => console.log(err));
+}
+
+export const getToTest = () => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios.get('/test')
+    .then(res => {
+        dispatch({
+            type: SET_TEST,
+            payload: res.data
+        })
+    })
+    .catch(err => {
+        dispatch({
+            type: SET_TEST,
+            payload: []
+        });
+    });
 }
 
 export const signupUser = (newUserData, history) => (dispatch) => {

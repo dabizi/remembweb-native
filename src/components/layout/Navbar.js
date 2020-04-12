@@ -39,7 +39,7 @@ export class Navbar extends Component {
 
                         </MyButton>
                         </Link>
-                        <TestDialog screamId={"AJANj50skQGr64dzYqez"} userHandle={"Janin"} openDialog={this.props.openDialog}/>
+                        <TestDialog openDialog={this.props.openDialog}/>
                         <PostScream/>
                         <Notifications />
                        </Fragment>

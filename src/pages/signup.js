@@ -45,21 +45,6 @@ export class signup extends Component {
             confirmPassword: this.state.confirmPassword,
             handle: this.state.handle
         };
-        /*axios.post('/signup', newUserData)
-        .then(res => {
-            console.log(res.data);
-            localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)
-            this.setState({
-                loading: false
-            });
-            this.props.history.push('/');
-        })
-        .catch(err => {
-            this.setState({
-                errors: err.response.data,
-                loading: false
-            })
-        })*/
         this.props.signupUser(newUserData, this.props.history);
     };
     handleChange = (event) => {

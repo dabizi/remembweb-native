@@ -19,7 +19,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 import { connect } from 'react-redux';
-import { getScream, clearErrors, validateTest } from '../../redux/actions/dataActions';
+import { getScream, clearErrors, validateTest, invalidateTest } from '../../redux/actions/dataActions';
 
 const styles = (theme) => ({
     ...theme.spreadThis,
@@ -51,7 +51,7 @@ const styles = (theme) => ({
 });
 
 class TestDialog extends Component {
-    
+
     state = {
         open: false,
         showForm: true,
@@ -65,28 +65,42 @@ class TestDialog extends Component {
     }
 
     handleOpen = () => {
-        const { userHandle, screamId } = this.props;
+        const { likes, user } = this.props;
+        //WIP
+        console.log(user);
+        console.log(likes);
+        console.log(likes[1].screamId);
+        console.log(likes[1].likeId);
+       //Prob : no like id in the likes
         this.setState({ open: true})//, oldPath, newPath })
-        
-        this.props.getScream(this.props.screamId);
+     //  this.props.getScream(this.props.screamId);
+        this.props.getScream(this.props.likes[1].screamId);
     }
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value})
-    }
+    };
 
     handleCheck = (event) => {
         event.preventDefault();
         this.setState({ showForm: false})
-        this.setState({ [event.name]: event.value });
-    }
+       this.setState({ [event.name]: event.value });
+    };
 
     handleClose = () => {
         this.setState({ open: false })
         this.setState({ showForm: true})
         this.props.clearErrors();
-    }
-    validateTest = () => {
-        this.props.validateTest("AJANj50skQGr64dzYqez");
+    };
+
+    successTest = (likeId) => {
+        console.log('Clicked Right');
+        this.props.validateTest(likeId);
+      };
+
+    failTest = (likeId) => {
+        console.log('Clicked Wrong');
+        this.props.invalidateTest(likeId);
+   //     this.props.invalidateTest("NjXJjroYRokPiCqXSyoU");
       };
 
     showForm = (classes, loading) => {
@@ -147,19 +161,20 @@ class TestDialog extends Component {
                        {keywords}
                    </Typography>
                    <Button 
-    type="submit" 
+    type="button" 
    variant="contained" 
    color="secondary"
+   onClick={() => {this.failTest(this.props.likes[1].likeId)}}
             className = {classes.wrongButton} disabled={loading}>
                 Wrong
                 {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
                
             </Button>
             <Button 
-    type="submit" 
+    type="button" 
    variant="contained" 
    color="primary"
-   onClick={this.validateTest}
+   onClick={() => {this.successTest(this.props.likes[1].likeId)}}
             className = {classes.submitButton} disabled={loading}>
                 Right
                 {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
@@ -171,19 +186,19 @@ class TestDialog extends Component {
 
     render(){
         const {classes, scream: { 
-            screamId, 
             body,
             theme,
             subject,
             answer,
             keywords,
             createdAt, 
-            userImage, 
-            userHandle,
-        }, 
+            userImage,
+            userHandle
+        },
             UI: { loading }} = this.props;
 
             const youranswer = this.state.youranswer;
+
 
         const dialogMarkup = loading ? (
             <div className={classes.spinnerDiv}>
@@ -222,6 +237,8 @@ class TestDialog extends Component {
                 </Grid>
             </Grid>
         );
+
+
         return (
             <Fragment>
                 <MyButton onClick={this.handleOpen} tip="Test" tipClassName={classes.expandButton}>
@@ -244,22 +261,25 @@ class TestDialog extends Component {
 TestDialog.propTypes = {
     clearErrors: PropTypes.func.isRequired,
     getScream: PropTypes.func.isRequired,
-    screamId: PropTypes.string.isRequired,
-    userHandle: PropTypes.string.isRequired,
     scream: PropTypes.object.isRequired,
     UI: PropTypes.object.isRequired,
-    validateTest: PropTypes.object.isRequired
+    validateTest: PropTypes.func.isRequired,
+    invalidateTest: PropTypes.func.isRequired,
+    likes: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => ({
     scream: state.data.scream,
-    UI: state.UI
+    UI: state.UI,
+    likes: state.user.likes,
+    user: state.user
 })
 
 const mapActionsToProps = {
     getScream,
     clearErrors,
     validateTest,
+    invalidateTest,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(TestDialog));

@@ -6,8 +6,7 @@ import {
     DELETE_SCREAM, 
     POST_SCREAM, 
     SET_SCREAM, 
-    SUBMIT_COMMENT,
-    VALIDATE_TEST    
+    SUBMIT_COMMENT,   
 } from '../types';
 
 const initialState = {
@@ -38,16 +37,6 @@ export default function(state = initialState, action){
         case UNLIKE_SCREAM:
             let index = state.screams.findIndex((scream) => scream.screamId === action.payload.screamId );
             state.screams[index] = action.payload;
-            if (state.scream.screamId === action.payload.screamId){
-                state.scream = action.payload;
-            }
-            return {
-                ...state
-            };
-        //TEST
-        case VALIDATE_TEST:
-            let index_va = state.screams.findIndex((scream) => scream.screamId === action.payload.screamId );
-            state.screams[index_va] = action.payload;
             if (state.scream.screamId === action.payload.screamId){
                 state.scream = action.payload;
             }

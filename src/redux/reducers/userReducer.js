@@ -7,7 +7,8 @@ import { SET_USER,
     LOADING_USER,
     UNLIKE_SCREAM,
     LIKE_SCREAM,
-    MARK_NOTIFICATIONS_READ
+    MARK_NOTIFICATIONS_READ,
+    SET_TEST
  } from '../types';
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
     loading: false,
     credentials: {},
     likes: [],
-    notifications: []
+    notifications: [],
+    totest: []
 };
 
 export default function(state = initialState, action){
@@ -49,18 +51,24 @@ export default function(state = initialState, action){
                     }
                 ]
             };
-            case UNLIKE_SCREAM:
-                return {
-                    ...state,
+        case UNLIKE_SCREAM:
+            return {
+                ...state,
                     likes: state.likes.filter(
                         (like) => like.screamId !== action.payload.screamId
                     )
                 };
-            case MARK_NOTIFICATIONS_READ:
-                state.notifications.forEach(not => not.read = true);
-                return {
+        case MARK_NOTIFICATIONS_READ:
+            state.notifications.forEach(not => not.read = true);
+            return {
                     ...state
-                };
+            };
+        case SET_TEST:
+            return {
+                    ...state,
+                    totest: action.payload,
+                    loading: false
+            };
         default:
             return state;
     }

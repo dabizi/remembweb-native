@@ -11,7 +11,8 @@ import {
     SET_ERRORS,
     STOP_LOADING_UI,
     SUBMIT_COMMENT,
-    VALIDATE_TEST
+    VALIDATE_TEST,
+    INVALIDATE_TEST
 } from '../types';
 import axios from 'axios'
 
@@ -32,7 +33,6 @@ export const getScreams = () => (dispatch) => {
             });
         });
 }
-
 
 //GET A SCREAM
 export const getScream = (screamId) => dispatch => {
@@ -80,11 +80,23 @@ export const likeScream = (screamId) => dispatch => {
 }
 
 // TEST VALIDATE TEST
-export const validateTest = (screamId) => dispatch => {
-    axios.get(`/screams/${screamId}/like`)
+export const validateTest = (likeId) => dispatch => {
+    axios.get(`/likes/${likeId}/success`)
     .then(res => {
         dispatch({
             type: VALIDATE_TEST,
+            payload: res.data
+        })
+    })
+    .catch(err => console.log(err));
+}
+
+// TEST INVALIDATE TEST
+export const invalidateTest = (likeId) => dispatch => {
+    axios.get(`/likes/${likeId}/failure`)
+    .then(res => {
+        dispatch({
+            type: INVALIDATE_TEST,
             payload: res.data
         })
     })

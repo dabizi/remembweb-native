@@ -109,8 +109,8 @@ class PostScream extends Component{
                             type="text"
                             label="Subject"
                             placeholder="Subject (ex : Louis XVI)"
-                            error={errors.body2 ? true : false}
-                            helperText={errors.body2}
+                            error={errors.subject ? true : false}
+                            helperText={errors.subject}
                             className={classes.textField}
                             onChange={this.handleChange}
                             fullWidth/>
