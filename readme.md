@@ -11,13 +11,14 @@ Notifications,\
 Questions and Answer, \
  Keywords for Answer \
  Remember Test Dialog \
-Deployed on Firebase Hosting
-
-TODO :\
-Solve Bug when like on screamDialog \
-List of Liked memo to test \
-Add Timebase Notifications\
+Deployed on Firebase Hosting \
 Backend for success/ failure of a memo \
+List of Liked memo to test \
+
+TODO 
+Get a grade on your answer \
+Solve Bug when like on screamDialog \
+Add Timebase Notifications\
 Add background image to Login && Sign Up Page\
 Add Paiement with Stripe\
 Add Paiement in Crypto
