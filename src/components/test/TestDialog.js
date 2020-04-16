@@ -277,7 +277,31 @@ class TestDialog extends Component {
 
             const youranswer = this.state.youranswer;
 
-        const dialogMarkup = loading ? (
+        const dialogMarkup = this.state.empty ? (
+            <Fragment>
+            <Typography variant="body1">
+            <span><u>Congratulations</u> :</span>
+        </Typography>
+        <Typography 
+        variant="body1"
+       style={{whiteSpace: 'pre-line'}}>
+            Amazing, it appears you already tested everything !! Come back later
+        </Typography>
+        <Button 
+type="button" 
+variant="contained" 
+color="secondary"
+onClick={() => {
+this.handleClose()
+}}
+ className = {classes.wrongButton} disabled={loading}>
+     Close
+     {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
+    
+ </Button>
+ </Fragment>
+            
+            ): (loading ? (
             <div className={classes.spinnerDiv}>
                 <CircularProgress size={200} thickness={2}/>
             </div>
@@ -310,12 +334,15 @@ class TestDialog extends Component {
                        {body}
                    </Typography>
                    <hr className={classes.invisibleSeparator}/>
-                    {this.state.empty ? this.showEmpty(classes) : (
+                    {
+                //    this.state.empty ? this.showEmpty(classes) : (
                //     (typeof this.props.toTest[0] === 'undefined' ?)
-                    this.state.showForm ? this.showForm(classes, loading) : this.showAnswer(classes, loading, answer, keywords, youranswer))}
+                    this.state.showForm ? this.showForm(classes, loading) : this.showAnswer(classes, loading, answer, keywords, youranswer)
+                  //  )
+                    }
                 </Grid>
             </Grid>
-        );
+        ));
 
 
         return (
