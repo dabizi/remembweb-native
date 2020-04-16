@@ -15,7 +15,8 @@ Deployed on Firebase Hosting \
 Backend for success/ failure of a memo \
 List of Liked memo to test 
 
-TODO 
+TODO
+Image upload test
 Get a grade on your answer \
 Solve Bug when like on screamDialog \
 Add Timebase Notifications\
