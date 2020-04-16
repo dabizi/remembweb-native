@@ -55,7 +55,8 @@ class TestDialog extends Component {
     state = {
         open: false,
         showForm: true,
-        youranswer: ''
+        youranswer: '',
+        empty: true
     };
 
     componentDidMount(){
@@ -65,16 +66,16 @@ class TestDialog extends Component {
     }
 
     handleOpen = () => {
-        const { likes, user } = this.props;
-        //WIP
-        console.log(user);
-        console.log(likes);
-        console.log(likes[1].screamId);
-        console.log(likes[1].likeId);
-       //Prob : no like id in the likes
+     //  let { toTest, user } = this.props;
         this.setState({ open: true})//, oldPath, newPath })
-     //  this.props.getScream(this.props.screamId);
-        this.props.getScream(this.props.likes[1].screamId);
+
+     //this.props.getScream(this.props.screamId);
+     if (typeof this.props.toTest[0] !== 'undefined')
+        {
+        this.setState({ open: true, empty: false})
+        this.props.getScream(this.props.toTest[0].screamId);
+        }
+        
     }
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value})
@@ -83,24 +84,66 @@ class TestDialog extends Component {
     handleCheck = (event) => {
         event.preventDefault();
         this.setState({ showForm: false})
-       this.setState({ [event.name]: event.value });
+        this.setState({ [event.name]: event.value });
     };
 
     handleClose = () => {
         this.setState({ open: false })
-        this.setState({ showForm: true})
+        this.setState({ showForm: true, empty: true})
         this.props.clearErrors();
     };
 
     successTest = (likeId) => {
         console.log('Clicked Right');
         this.props.validateTest(likeId);
+        this.props.toTest.shift();
+        console.log(this.props.toTest);
+        console.log(this.props.toTest);
+        if (typeof this.props.toTest[0] === 'undefined')
+        {
+            if (!this.state.empty) 
+            {
+                this.setState({ empty: true})
+            }
+        } else {
+            if (this.state.empty)
+            {
+                this.setState({ empty: false})
+            }
+            this.props.getScream(this.props.toTest[0].screamId);
+        }
+        this.setState({ showForm: true})
       };
 
     failTest = (likeId) => {
-        console.log('Clicked Wrong');
+        //console.log('Clicked Wrong');
+
+        //console.log(this.props.toTest)        
+        let temp = this.props.toTest[0]
+        
+        this.props.toTest.shift();
+        temp.testedAt = new Date().toISOString()
+        temp.level = 1
+        this.props.toTest.push(temp)
+
+        console.log(this.props.toTest)
         this.props.invalidateTest(likeId);
-   //     this.props.invalidateTest("NjXJjroYRokPiCqXSyoU");
+        
+        if (typeof this.props.toTest[0] === 'undefined')
+        {
+            if (!this.state.empty) 
+            {
+                this.setState({ empty: true})
+            }
+        } else {
+            if (!this.state.empty) 
+            {
+                this.setState({ empty: false})
+            }
+            this.props.getScream(this.props.toTest[0].screamId);
+        }
+
+        this.setState({ showForm: true})
       };
 
     showForm = (classes, loading) => {
@@ -164,7 +207,11 @@ class TestDialog extends Component {
     type="button" 
    variant="contained" 
    color="secondary"
-   onClick={() => {this.failTest(this.props.likes[1].likeId)}}
+   onClick={() => {
+
+       this.failTest(this.props.toTest[0].likeId)
+    
+    }}
             className = {classes.wrongButton} disabled={loading}>
                 Wrong
                 {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
@@ -174,7 +221,11 @@ class TestDialog extends Component {
     type="button" 
    variant="contained" 
    color="primary"
-   onClick={() => {this.successTest(this.props.likes[1].likeId)}}
+   onClick={() => {
+
+       this.successTest(this.props.toTest[0].likeId)
+    
+    }}
             className = {classes.submitButton} disabled={loading}>
                 Right
                 {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
@@ -183,6 +234,33 @@ class TestDialog extends Component {
                    </Fragment>
 
         );}
+
+        showEmpty = (classes, loading, answer, keywords, youranswer) => {
+            return (
+                <Fragment>
+                    <Typography variant="body1">
+                           <span><u>Empty</u> :</span>
+                       </Typography>
+                       <Typography 
+                       variant="body1"
+                      style={{whiteSpace: 'pre-line'}}>
+                           'Amazing, it appears you already tested everything !! Come back later'
+                       </Typography>
+                       <Button 
+        type="button" 
+       variant="contained" 
+       color="secondary"
+       onClick={() => {
+           this.handleClose()
+        }}
+                className = {classes.wrongButton} disabled={loading}>
+                    Close
+                    {loading && ( <CircularProgress size={30} className={classes.progressSpinner}/>)}
+                   
+                </Button>
+                       </Fragment>
+    
+            );}
 
     render(){
         const {classes, scream: { 
@@ -198,7 +276,6 @@ class TestDialog extends Component {
             UI: { loading }} = this.props;
 
             const youranswer = this.state.youranswer;
-
 
         const dialogMarkup = loading ? (
             <div className={classes.spinnerDiv}>
@@ -233,7 +310,9 @@ class TestDialog extends Component {
                        {body}
                    </Typography>
                    <hr className={classes.invisibleSeparator}/>
-                    {this.state.showForm ? this.showForm(classes, loading) : this.showAnswer(classes, loading, answer, keywords, youranswer)}
+                    {this.state.empty ? this.showEmpty(classes) : (
+               //     (typeof this.props.toTest[0] === 'undefined' ?)
+                    this.state.showForm ? this.showForm(classes, loading) : this.showAnswer(classes, loading, answer, keywords, youranswer))}
                 </Grid>
             </Grid>
         );
@@ -253,7 +332,6 @@ class TestDialog extends Component {
                     </DialogContent>
                 </Dialog>
             </Fragment>
-            
         )
     }
 }
@@ -265,14 +343,17 @@ TestDialog.propTypes = {
     UI: PropTypes.object.isRequired,
     validateTest: PropTypes.func.isRequired,
     invalidateTest: PropTypes.func.isRequired,
-    likes: PropTypes.array.isRequired
+    //likes: PropTypes.array.isRequired,
+    toTest: PropTypes.array
+    //Check why isRequired give error
 }
 
 const mapStateToProps = state => ({
     scream: state.data.scream,
     UI: state.UI,
-    likes: state.user.likes,
-    user: state.user
+  //  likes: state.user.likes,
+    user: state.user,
+    toTest: state.user.toTest
 })
 
 const mapActionsToProps = {
