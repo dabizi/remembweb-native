@@ -173,19 +173,56 @@ class TestDialog extends Component {
                
             </Button>
         </form>
-          );
+          ); 
       }
 
       showAnswer = (classes, loading, answer, keywords, youranswer) => {
-        return (
-            <Fragment>
-                <Typography variant="body1">
+        let ls = keywords.split(',')
+        let i
+        let ans
+        let grade = 0
+        let yourans = youranswer.toLowerCase()
+        let valid_answer = []
+        let wrong_answer = []
+        //console.log(ls.length)
+        for (i = 0; i < ls.length; i++) {
+            ans = ls[i].trim().toLowerCase()
+            if (yourans.includes(ans)) {
+                grade++
+                valid_answer.push(ans)
+            } else {
+                wrong_answer.push(ans)
+            }
+         //   console.log(ans)
+           // console.log(yourans.includes(ans))
+        }
+        grade = (grade/ls.length)* 100
+        //console.log(grade)
+        //console.log(valid_answer)
+        //console.log(wrong_answer)
+        //console.log(wrong_answer.toString().replace(',', ', '))
+        let wrong_str = wrong_answer.toString()
+        wrong_str = wrong_str.replace(/,/g, ", ")
+        let valid_str = valid_answer.toString()
+        valid_str = valid_str.replace(/,/g, ", ")
+        /*
+        let j = h.replace(/[^\x20-\x7E]/g, '');
+        console.log(j)
+        let k = j.replace(",", ", ")
+        console.log(k)
+        let l = k.replace(/,/g, ", ")
+        console.log(l)
+        console.log(typeof(wrong_answer))
+        */
+
+        /*Backup 
+        <Typography variant="body1">
                        <span><u>Your Answer</u> :</span>
                    </Typography>
                    <Typography 
                    variant="body1"
                   style={{whiteSpace: 'pre-line'}}>
-                       {youranswer}
+                       {valid_str}
                    </Typography>
                    <Typography variant="body1">
                        <span><u>General Answer</u> :</span>
@@ -203,6 +240,39 @@ class TestDialog extends Component {
                    <Typography variant="body1">
                        {keywords}
                    </Typography>
+
+
+        */
+
+        return (
+            <Fragment>
+                <Typography variant="body1">
+                       <span><u>Your Grade</u> :</span>
+                   </Typography>
+                   <Typography 
+                   variant="body1"
+                  style={{whiteSpace: 'pre-line'}}>
+                       {grade}
+                   </Typography>
+                   <Typography variant="body1">
+                       <span><u>You succeed on :</u> :</span>
+                   </Typography>
+                   <Typography 
+                   variant="body1"
+                   color="primary"
+                  style={{whiteSpace: 'pre-line'}}>
+                       {valid_str}
+                   </Typography>
+                   <Typography variant="body1">
+                       <span><u>You failed on :</u> :</span>
+                   </Typography>
+                   <Typography 
+                   variant="body1"
+                   color="secondary"
+                  style={{whiteSpace: 'pre-line'}}>
+                       {wrong_str}
+                   </Typography>
+                
                    <Button 
     type="button" 
    variant="contained" 
@@ -278,7 +348,7 @@ class TestDialog extends Component {
             const youranswer = this.state.youranswer;
 
         const dialogMarkup = this.state.empty ? (
-            <Fragment>
+             <Fragment>
             <Typography variant="body1">
             <span><u>Congratulations</u> :</span>
         </Typography>
@@ -289,7 +359,7 @@ class TestDialog extends Component {
         </Typography>
         <Button 
 type="button" 
-variant="contained" 
+variant="contained"  
 color="secondary"
 onClick={() => {
 this.handleClose()
