@@ -13,11 +13,13 @@ Questions and Answer, \
  Remember Test Dialog \
 Deployed on Firebase Hosting \
 Backend for success/ failure of a memo \
+Get a grade on your answer \
 List of Liked memo to test 
 
 TODO
 Image upload test
-Get a grade on your answer \
+Add scream modification \
+Change image depending on the subject \
 Solve Bug when like on screamDialog \
 Add Timebase Notifications\
 Add background image to Login && Sign Up Page\
