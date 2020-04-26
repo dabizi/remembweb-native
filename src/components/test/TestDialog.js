@@ -18,6 +18,11 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import { connect } from 'react-redux';
 import { getScream, clearErrors, validateTest, invalidateTest } from '../../redux/actions/dataActions';
 
@@ -68,8 +73,6 @@ class TestDialog extends Component {
     handleOpen = () => {
      //  let { toTest, user } = this.props;
         this.setState({ open: true})//, oldPath, newPath })
-
-     //this.props.getScream(this.props.screamId);
      if (typeof this.props.toTest[0] !== 'undefined')
         {
         this.setState({ open: true, empty: false})
@@ -115,10 +118,7 @@ class TestDialog extends Component {
         this.setState({ showForm: true})
       };
 
-    failTest = (likeId) => {
-        //console.log('Clicked Wrong');
-
-        //console.log(this.props.toTest)        
+    failTest = (likeId) => {      
         let temp = this.props.toTest[0]
         
         this.props.toTest.shift();
@@ -193,59 +193,48 @@ class TestDialog extends Component {
             } else {
                 wrong_answer.push(ans)
             }
-         //   console.log(ans)
-           // console.log(yourans.includes(ans))
         }
         grade = (grade/ls.length)* 100
-        //console.log(grade)
-        //console.log(valid_answer)
-        //console.log(wrong_answer)
-        //console.log(wrong_answer.toString().replace(',', ', '))
         let wrong_str = wrong_answer.toString()
         wrong_str = wrong_str.replace(/,/g, ", ")
         let valid_str = valid_answer.toString()
         valid_str = valid_str.replace(/,/g, ", ")
-        /*
-        let j = h.replace(/[^\x20-\x7E]/g, '');
-        console.log(j)
-        let k = j.replace(",", ", ")
-        console.log(k)
-        let l = k.replace(/,/g, ", ")
-        console.log(l)
-        console.log(typeof(wrong_answer))
-        */
 
-        /*Backup 
-        <Typography variant="body1">
-                       <span><u>Your Answer</u> :</span>
-                   </Typography>
-                   <Typography 
+        return (
+            <Fragment>
+                  <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography className={classes.heading}>See your answer</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+        <Typography 
                    variant="body1"
                   style={{whiteSpace: 'pre-line'}}>
-                       {valid_str}
+                       {youranswer}
                    </Typography>
-                   <Typography variant="body1">
-                       <span><u>General Answer</u> :</span>
-                   </Typography>
-                   <Typography 
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>See the right answer</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+        <Typography 
                    variant="body1"
                   style={{whiteSpace: 'pre-line'}}>
                        {answer}
                    </Typography>
-                   <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body1">
-                       <span><u>Keywords</u> :</span>
-                   </Typography>
-                   <hr className={classes.invisibleSeparator}/>
-                   <Typography variant="body1">
-                       {keywords}
-                   </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
 
-
-        */
-
-        return (
-            <Fragment>
                 <Typography variant="body1">
                        <span><u>Your Grade</u> :</span>
                    </Typography>
@@ -255,7 +244,7 @@ class TestDialog extends Component {
                        {grade}
                    </Typography>
                    <Typography variant="body1">
-                       <span><u>You succeed on :</u> :</span>
+                       <span><u>You succeed on :</u></span>
                    </Typography>
                    <Typography 
                    variant="body1"
@@ -264,7 +253,7 @@ class TestDialog extends Component {
                        {valid_str}
                    </Typography>
                    <Typography variant="body1">
-                       <span><u>You failed on :</u> :</span>
+                       <span><u>You failed on :</u></span>
                    </Typography>
                    <Typography 
                    variant="body1"
@@ -272,6 +261,8 @@ class TestDialog extends Component {
                   style={{whiteSpace: 'pre-line'}}>
                        {wrong_str}
                    </Typography>
+                 
+
                 
                    <Button 
     type="button" 
@@ -405,8 +396,6 @@ this.handleClose()
                    </Typography>
                    <hr className={classes.invisibleSeparator}/>
                     {
-                //    this.state.empty ? this.showEmpty(classes) : (
-               //     (typeof this.props.toTest[0] === 'undefined' ?)
                     this.state.showForm ? this.showForm(classes, loading) : this.showAnswer(classes, loading, answer, keywords, youranswer)
                   //  )
                     }
