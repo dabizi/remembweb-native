@@ -14,10 +14,11 @@ Questions and Answer, \
 Deployed on Firebase Hosting \
 Backend for success/ failure of a memo \
 Get a grade on your answer \
-List of Liked memo to test 
+List of Liked memo to test \
+Expansion panel to consult right and wrong answers
 
 TODO
-Image upload test
+Image upload test \
 Add scream modification \
 Change image depending on the subject \
 Solve Bug when like on screamDialog \
